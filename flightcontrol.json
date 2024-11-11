@@ -1,0 +1,59 @@
+{
+  "$schema": "https://app.flightcontrol.dev/schema.json",
+  "environments": [
+    {
+      "id": "production",
+      "name": "Production",
+      "region": "us-east-1",
+      "services": [
+        {
+          "id": "api",
+          "name": "API",
+          "type": "fargate",
+          "buildType": "docker",
+          "dockerfilePath": "./demo-server/Dockerfile",
+          "cpu": 0.5,
+          "memory": 1,
+          "minInstances": 1,
+          "maxInstances": 1,
+          "port": 3001,
+          "envVariables": {
+            "DATABASE_URL": {
+              "type": "secret"
+            },
+            "LLM_API_KEY": {
+              "type": "secret"
+            },
+            "WEBHOOK_SECRET": {
+              "type": "secret"
+            }
+          },
+          "healthCheck": {
+            "path": "/api/health"
+          }
+        },
+        {
+          "id": "frontend",
+          "name": "Frontend",
+          "type": "static",
+          "buildType": "nixpacks",
+          "buildCommand": "cd project && npm install && npm run build",
+          "outputDirectory": "project/dist",
+          "envVariables": {
+            "VITE_API_URL": "/api"
+          }
+        },
+        {
+          "id": "db",
+          "name": "Database",
+          "type": "rds",
+          "engine": "postgres",
+          "engineVersion": "15",
+          "instanceSize": "db.t3.micro",
+          "storage": 20,
+          "private": true
+        }
+      ]
+    }
+  ]
+} 
