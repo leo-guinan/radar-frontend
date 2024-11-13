@@ -19,7 +19,7 @@ export interface SendMessageResponse {
   messages: Message[];
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 console.log('API_BASE', API_BASE);
 
 export const api = {
@@ -49,8 +49,17 @@ export const api = {
     const response = await fetch(`${API_BASE}/conversations/${conversationId}/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, url }),
+      body: JSON.stringify({ 
+        message: message, 
+        url: url 
+      }),
     });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to send message: ${errorText}`);
+    }
+    
     return await response.json();
   },
 

@@ -2,9 +2,10 @@ export type MessageRole = 'ai' | 'human';
 
 export interface Message {
   id: string;
-  role: MessageRole;
+  conversation_id: string;
+  role: 'user' | 'assistant';
   content: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
 export interface InsightDocument {
