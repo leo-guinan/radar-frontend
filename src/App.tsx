@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { AnalyzeForm } from './components/AnalyzeForm';
-import { Conversation } from './components/Conversation';
+import Conversation from './components/Conversation';
 import { api } from './lib/api';
 import type { MediaInput } from './types';
 import { useState } from 'react';
